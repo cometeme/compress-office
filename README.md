@@ -8,27 +8,27 @@ A simple tool that use [ImageOptim](https://github.com/ImageOptim/ImageOptim) to
 
 ## Installing
 
-Clone this repo first：
+Clone this repo first:
 
 ```
 git clone https://github.com/cometeme/compress-office.git
 ```
 
-Then we need ：
+Then we need:
 
 1. ImageOptim: https://github.com/ImageOptim/ImageOptim
 2. Python 3.8 (and you need to install `rich` package via `pip`)
 3. trash: https://github.com/ali-rantakari/trash
 4. fd (Optional, can optimize searching speed): https://github.com/sharkdp/fd
 
-If you have Homebrew，run these command to install (or install manually):
+If you have Homebrew，run these commands to install dependencies (or install manually):
 
 ```
 brew install imageoptim python@3.8 trash
 pip3.8 install rich
 ```
 
-Then start ImageOptim, open "Preferences" menu and modify the settings. You can choose to perform lossless or lossy compression on the pictures in the document. The former can maintain the image quality, while the latter can better reduce file size. You can also choose whether to remove EXIF information. EXIF contains informations about the time, location and camera information. Removes EXIF in the picture can better protect your privacy.
+Then start ImageOptim, open "Preferences" menu and modify the settings. You can choose to perform lossless or lossy compression on the pictures in the document. The former can maintain the image quality, while the latter can better reduce size. You can also choose whether to remove EXIF information. EXIF contains informations about the time, gps and camera settings. Removes EXIF in the picture can better protect your privacy.
 
 ## Usage
 
@@ -46,7 +46,7 @@ python3.8 compress-office.py ~/Documents ./test.docx
 
 When program run for the first time, it will create a file called `process_history.csv`, which records the path of the compressed file and its md5. When running again, if program finds that the file has not changed (file path is in the history and its md5 is the same as recorded), then the program will skip the file without re-compressing, because doing so is not meaningful. If you really need to recompress a file, just delete its record from csv file.
 
-After the compression is complete, the original document will be moved to recycle bin. **Please check your documents before clear the recycle bin.**
+After the compression is complete, the original document will be moved to recycle bin. **Please check your documents before empty the recycle bin.**
 
 ## Use `fd` to speed up searching (optional)
 
