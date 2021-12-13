@@ -1,12 +1,13 @@
 from glob import glob
 from os.path import abspath, exists, isfile, join
+from shlex import quote
 from subprocess import PIPE, run
 from sys import argv
 
 from rich.console import Console
 
-from function import *
-from history import *
+from function import compress, convert_size
+from history import history
 
 console = Console(highlighter=None)
 exts = ("docx", "pptx", "xlsx")
@@ -72,19 +73,25 @@ if __name__ == "__main__":
     before_size_sum = 0
     after_size_sum = 0
 
-    for i, file_path in enumerate(file_paths, start=1):
-        print(f"[{i}/{file_cnt}] Processing {file_path}")
-        result = compress(file_path)
-        his.add_history(file_path)
-        before_size_sum += result[0]
-        after_size_sum += result[1]
+    try:
+        for i, file_path in enumerate(file_paths, start=1):
+            print(f"[{i}/{file_cnt}] Processing {file_path}")
+            result = compress(file_path)
+            his.add_history(file_path)
+            before_size_sum += result[0]
+            after_size_sum += result[1]
+    except Exception as e:
+        print(e)
+    finally:
+        if before_size_sum == 0:
+            exit()
 
-    # Compress complete, print result
-    console.print(
-        f"Total compressed {convert_size(before_size_sum - after_size_sum)}",
-        style="bold green",
-    )
-    console.print(
-        f"Compress rate {round(100 * (before_size_sum - after_size_sum) / before_size_sum, 2)}%",
-        style="bold green",
-    )
+        # Print result
+        console.print(
+            f"Total compressed {convert_size(before_size_sum - after_size_sum)}",
+            style="bold green",
+        )
+        console.print(
+            f"Compress rate {round(100 * (before_size_sum - after_size_sum) / before_size_sum, 2)}%",
+            style="bold green",
+        )

@@ -1,6 +1,6 @@
+import csv
 from hashlib import md5
 from os.path import abspath, exists
-import csv
 
 
 class history:

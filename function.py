@@ -1,6 +1,5 @@
 from os import mkdir
 from os.path import abspath, basename, exists, expanduser, getsize, join
-from shlex import quote
 from shutil import move, rmtree
 from subprocess import DEVNULL, run
 from typing import Tuple
@@ -11,9 +10,7 @@ console = Console()
 
 # Modify these to use on other platform
 cache_folder = expanduser("~/Library/Caches/compress-office/")
-compress_command = (
-    "/Applications/ImageOptim.app/Contents/MacOS/ImageOptim ~/Library/Caches/compress-office/*"
-)
+image_optim_executable = "/Applications/ImageOptim.app/Contents/MacOS/ImageOptim"
 
 
 def convert_size(size_in_byte: int) -> str:
@@ -40,8 +37,7 @@ def compress(file_path: str) -> Tuple:
     # Unzip file
     with console.status("[bold green]Unzipping Document..."):
         run(
-            f"unzip {quote(file_path)} -d {quote(cache_folder)}",
-            shell=True,
+            ["unzip", file_path, "-d", cache_folder],
             stdout=DEVNULL,
         ).check_returncode()
 
@@ -49,8 +45,7 @@ def compress(file_path: str) -> Tuple:
     new_file_path = join(cache_folder, file_name)
     with console.status("[bold green]Compressing Images..."):
         run(
-            compress_command,
-            shell=True,
+            [image_optim_executable, cache_folder],
             stdout=DEVNULL,
             stderr=DEVNULL,
         ).check_returncode()
@@ -58,20 +53,18 @@ def compress(file_path: str) -> Tuple:
     # Rezip file
     with console.status("[bold green]Packing Document..."):
         run(
-            f"cd {quote(cache_folder)} && zip {quote(file_name)} -r *",
-            shell=True,
+            ["zip", file_name, "-r", "."],
             stdout=DEVNULL,
+            cwd=cache_folder,
         ).check_returncode()
     after_size = getsize(new_file_path)
-
     if after_size >= before_size:
         print("File size unchanged")
         return (before_size, before_size)
 
     # Move new file to origin place
     run(
-        f"trash {quote(file_path)}",
-        shell=True,
+        ["trash", file_path],
     ).check_returncode()
     move(new_file_path, file_path)
 
