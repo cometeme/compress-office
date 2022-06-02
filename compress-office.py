@@ -1,7 +1,7 @@
 from glob import glob
 from os.path import abspath, exists, isfile, join
 from shlex import quote
-from subprocess import PIPE, run
+from subprocess import DEVNULL, PIPE, run
 from sys import argv
 
 from rich.console import Console
@@ -11,8 +11,8 @@ from history import history
 
 console = Console(highlighter=None)
 exts = ("docx", "pptx", "xlsx")
-use_fd = False  # Using fd can significantly improve the search speed
-check_md5 = True
+# Using fd can significantly improve the search speed
+use_fd = run("fd --version", shell=True, stdout=DEVNULL, stderr=DEVNULL).returncode == 0
 
 if __name__ == "__main__":
     his = history("process_history.csv")
@@ -32,7 +32,7 @@ if __name__ == "__main__":
             if not arg.split(".")[-1] in exts:
                 console.print(f"Error: {arg} is not a supported file.", style="bold red")
                 exit(-1)
-            if not his.file_in_history(arg, check_md5):
+            if not his.file_in_history(arg):
                 file_paths.append(arg)
             else:
                 unchanged_files += 1
@@ -48,14 +48,14 @@ if __name__ == "__main__":
                 )
                 res.check_returncode()
                 for file_path in res.stdout.decode().splitlines():
-                    if not his.file_in_history(file_path, check_md5):
+                    if not his.file_in_history(file_path):
                         file_paths.append(file_path)
                     else:
                         unchanged_files += 1
             else:
                 for ext in exts:
                     for file_path in glob(join(arg, "**", f"*.{ext}"), recursive=True):
-                        if not his.file_in_history(file_path, check_md5):
+                        if not his.file_in_history(file_path):
                             file_paths.append(file_path)
                         else:
                             unchanged_files += 1
@@ -92,6 +92,6 @@ if __name__ == "__main__":
             style="bold green",
         )
         console.print(
-            f"Compress rate {round(100 * (before_size_sum - after_size_sum) / before_size_sum, 2)}%",
+            f"Compression rate {round(100 * (before_size_sum - after_size_sum) / before_size_sum, 2)}%",
             style="bold green",
         )

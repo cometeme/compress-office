@@ -44,7 +44,7 @@ For example:
 python3.8 compress-office.py ~/Documents ./test.docx
 ```
 
-When program run for the first time, it will create a file called `process_history.csv`, which records the path of the compressed file and its md5. When running again, if program finds that the file has not changed (file path is in the history and its md5 is the same as recorded), then the program will skip the file without re-compressing, because doing so is not meaningful. If you really need to recompress a file, just delete its record from csv file.
+When program run for the first time, it will create a file called `process_history.csv`, which records the path of the compressed file and its modify time. When running again, if program finds that the file has not changed (file path is in the history and its modify time is same as recorded), then the program will skip the file without re-compressing, because doing so is not meaningful. If you really need to recompress a file, just delete its record from csv file.
 
 After the compression is complete, the original document will be moved to recycle bin. **Please check your documents before empty the recycle bin.**
 
@@ -52,7 +52,7 @@ After the compression is complete, the original document will be moved to recycl
 
 The program uses python's built-in `glob` for file traversal by default, but it is very slow when there are many files, so the program supports the use of [fd](https://github.com/sharkdp/fd) to speed up the search.
 
-Enter `brew install fd` in the console to install `fd`, then edit `compress-office.py` and change `use_fd = False` to `use_fd = True` to use `fd` to speed up the search.
+If you have HomeBrew, enter `brew install fd` in the console to install `fd`.
 
 ## Other questions
 
@@ -64,7 +64,7 @@ A1: Yes, but you need to find a substitute for ImageOptim first, such as `Trimag
 
 A2: The docx/pptx/xlsx document is essentially a zip compressed package, in which the resources are packaged together. This program decompresses the documents passed in by user into a cache directory one by one, use ImageOptim to compress all the pictures in the cache directory, recompresses them, and puts new file back.
 
-Therefore, **in theory**, using this program will not corrupt files when compressing theme, but in order to prevent unpredictable bugs, it is recommended that back up the files before compress theme. At the same time, this program will move the original document to the recycle bin after compression, and if you found a problem, you can restore the original file from the recycle bin.
+Therefore, **in theory**, using this program will not corrupt files when compressing, but in order to prevent unpredictable bugs, it is recommended to backup files before compress them. At the same time, this program will move the original document to the recycle bin after compression, and if you found a problem, you can restore the original file from the recycle bin.
 
 ### Q3: Why there are many pictures in the recycle bin after compression?
 
