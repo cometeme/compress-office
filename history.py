@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 import csv
-from os.path import abspath, exists
 import os
+from os.path import abspath, exists
+
 
 class history:
     def __init__(self, path: str) -> None:

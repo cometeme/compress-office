@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from glob import glob
 from os.path import abspath, exists, isfile, join
 from shlex import quote
@@ -29,8 +30,10 @@ if __name__ == "__main__":
         arg = abspath(arg)
 
         if isfile(arg):
-            if not arg.split(".")[-1] in exts:
-                console.print(f"Error: {arg} is not a supported file.", style="bold red")
+            if arg.split(".")[-1] not in exts:
+                console.print(
+                    f"Error: {arg} is not a supported file.", style="bold red"
+                )
                 exit(-1)
             if not his.file_in_history(arg):
                 file_paths.append(arg)

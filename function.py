@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from os import mkdir
 from os.path import abspath, basename, exists, expanduser, getsize, join
 from shutil import move, rmtree
@@ -63,15 +64,22 @@ def compress(file_path: str) -> Tuple:
         return (before_size, before_size)
 
     # Move new file to origin place
-    run(
-        ["trash", file_path],
-    ).check_returncode()
+    # run(
+    #     ["trash", file_path],
+    # ).check_returncode()
+    file_extension = file_path.split(".")[-1]  # docx
+    move(
+        file_path,
+        file_path.replace("." + file_extension, "_uncompressed." + file_extension),
+    )
     move(new_file_path, file_path)
 
     # Delete caches
     if exists(cache_folder):
         rmtree(cache_folder)
 
-    print(f"Successfully compressed {convert_size(before_size)} -> {convert_size(after_size)}")
+    print(
+        f"Successfully compressed {convert_size(before_size)} -> {convert_size(after_size)}"
+    )
 
     return (before_size, after_size)
