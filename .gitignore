@@ -2,3 +2,7 @@
 .vscode
 __pycache__
 process_history.csv
+
+# uv
+.venv/
+uv.lock

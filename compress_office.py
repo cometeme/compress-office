@@ -14,7 +14,8 @@ exts = ("docx", "pptx", "xlsx")
 # Using fd can significantly improve the search speed
 use_fd = run("fd --version", shell=True, stdout=DEVNULL, stderr=DEVNULL).returncode == 0
 
-if __name__ == "__main__":
+
+def main() -> None:
     his = history("process_history.csv")
     his.clean_up()
 
@@ -95,3 +96,7 @@ if __name__ == "__main__":
             f"Compression rate {round(100 * (before_size_sum - after_size_sum) / before_size_sum, 2)}%",
             style="bold green",
         )
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,8 @@
+[project]
+name = "compress-office"
+version = "0.1.0"
+description = "Compress images in Office documents (docx/pptx/xlsx) using ImageOptim"
+requires-python = ">=3.8"
+dependencies = [
+    "rich",
+]
