@@ -2,7 +2,13 @@
 .vscode
 __pycache__
 process_history.csv
+CLAUDE.md
+AGENTS.md
+demo/
+demo.tape
+scripts/
 
-# uv
 .venv/
 uv.lock
+run.sh
+run.sh

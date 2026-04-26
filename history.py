@@ -2,6 +2,7 @@ import csv
 from os.path import abspath, exists
 import os
 
+
 class history:
     def __init__(self, path: str) -> None:
         self.path = path
