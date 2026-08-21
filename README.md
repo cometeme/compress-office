@@ -1,3 +1,5 @@
+
+
 # Compress Office 
 
 English | [中文](README_ZH_CN.md)
@@ -70,7 +72,7 @@ uv run python compress_office.py --no-parallel ~/Documents
 
 When the program runs for the first time, it will create a file called `process_history.csv`, which records the path of the compressed file and its modify time. When running again, if program finds that the file has not changed (file path is in the history and its modify time is same as recorded), then the program will skip the file without re-compressing, because doing so is not meaningful. If you really need to recompress a file, just delete its record from csv file.
 
-After the compression is complete, the original document will be moved to recycle bin. **Please check your documents before emptying the recycle bin.**
+After the compression is complete, if the file size is reduced, the original document will be moved to recycle bin. **Please check your documents before emptying the recycle bin.**
 
 ## Use `fd` to speed up searching (optional)
 
